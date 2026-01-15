@@ -1,0 +1,26 @@
+!define BG_COLOUR #438DD5
+!define B_COLOUR #3C7FC0
+!define F_COLOUR white
+
+skinparam Participant {
+    BackgroundColor BG_COLOUR
+    BorderColor B_COLOUR
+    FontColor F_COLOUR
+}
+
+skinparam actor {
+    BackgroundColor BG_COLOUR
+    BorderColor B_COLOUR
+    style awesome
+}
+
+<style>
+sequenceDiagram {
+
+  groupHeader {
+    FontColor F_COLOUR
+    BackGroundColor B_COLOUR
+    LineColor B_COLOUR
+  }
+}
+</style>

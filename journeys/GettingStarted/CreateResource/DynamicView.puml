@@ -1,0 +1,78 @@
+@startuml CreateResource_RulesCheck_OptimizedActivations.png
+
+!include ../../../theme/ImageExportSettings.puml
+!include ../../../theme/SequenceDiagram.puml
+!include ./Title.puml
+
+title TITLE\nSolution Outline Dynamic View — Create Resource (Optimized Activations)
+
+actor User
+participant "Client Application\n(Web/Mobile)" as ClientApp
+participant "API Gateway\nExperience APIs (GraphQL)" as Gateway
+participant "Content Management\nService" as CMS
+participant "Integration Layer\n(Orchestration)" as INT
+participant "Backend Service\n(Business Logic & Data)" as Backend
+participant "Notification Service" as Notif
+
+' Step 1: Authentication - short-lived activation for network call and UI update
+User -> ClientApp : Authenticate (OAuth 2.0 PKCE)
+activate ClientApp
+ClientApp -> Gateway : Start OAuth PKCE / Exchange code for tokens
+activate Gateway
+Gateway --> ClientApp : id_token, access_token (short-lived)
+deactivate Gateway
+ClientApp --> User : Present app shell (placeholders)
+deactivate ClientApp
+
+' Step 2: Fetch form content from CMS (ClientApp active only around request/response)
+User -> ClientApp : Tap "New Resource" (open create flow)
+activate ClientApp
+ClientApp -> Gateway : Query GetResourceFormContent
+activate Gateway
+Gateway -> CMS : GetEntry(type: "resource_form") [delivery token, read-only]
+activate CMS
+CMS --> Gateway : form schema & localized labels
+deactivate CMS
+Gateway --> ClientApp : form content (sanitized)
+deactivate Gateway
+ClientApp --> User : Render form UI
+deactivate ClientApp
+
+' Step 3: User submits create request — ClientApp active only while submitting + rendering result
+User -> ClientApp : Submit CreateResource (name, target)
+activate ClientApp
+ClientApp -> Gateway : Mutation CreateResource(input) [Bearer token]
+activate Gateway
+
+' INT orchestrates eligibility check + create
+Gateway -> INT : Orchestrate CreateResource(userId, input)
+activate INT
+INT -> Backend : Evaluate CanCreateResource(userId, input)
+activate Backend
+Backend --> INT : {allowed: true, reason: null} OR {allowed: false, reason: "limit_reached"}
+deactivate Backend
+
+alt allowed = true
+    INT -> Backend : CreateResource(userId, metadata)
+    activate Backend
+    Backend --> INT : createdResource (resourceId, initialState)
+    deactivate Backend
+
+    INT --> Gateway : Success(createdResource)
+else allowed = false
+    INT --> Gateway : Error (403 / reason: cannot_create_resource)
+end
+deactivate INT
+
+Gateway --> ClientApp : Return result (createdResource or error)
+deactivate Gateway
+ClientApp --> User : Show confirmation or friendly error
+deactivate ClientApp
+
+' Step 4: Post-create backend notifications (fire-and-forget; no ClientApp activation)
+Gateway -> Notif : Publish "resource.created" event (userId, resourceId)
+activate Notif
+Notif --> Gateway : 202 Accepted
+deactivate Notif
+
+@enduml

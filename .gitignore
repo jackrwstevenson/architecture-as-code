@@ -1,0 +1,16 @@
+# Build output
+builds/*
+# Exception: keep the example diagram for README
+!builds/GettingStarted/
+!builds/GettingStarted/CreateResource/
+!builds/GettingStarted/CreateResource/CreateResource_RulesCheck_OptimizedActivations.png
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+*.iml
+*.swp
+*.swo
+*~
