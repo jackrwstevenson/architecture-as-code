@@ -27,6 +27,8 @@ AI agents like [Claude Code](https://claude.com/claude-code) can significantly a
 
 The AI can read your existing diagrams and theme files to maintain visual consistency across your entire architecture documentation.
 
+> **Data privacy:** Before sharing architecture diagrams or details with AI agents, review your organisation’s data-privacy policies and any applicable legal requirements. Anonymise or remove any sensitve data and ensure appropriate security and contractual safeguards are in place.
+
 # Pre-Requisites
 
 ## Java
