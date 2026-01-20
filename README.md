@@ -4,7 +4,7 @@ This repository contains architecture as code, using PlantUML to create a series
 
 ## Example Output
 
-Here's an example of a generated sequence diagram showing a resource creation flow with optimized activations:
+Here's an example of a generated sequence diagram showing a resource creation flow:
 
 ![Create Resource Example](builds/GettingStarted/CreateResource/CreateResource_RulesCheck_OptimizedActivations.png)
 
