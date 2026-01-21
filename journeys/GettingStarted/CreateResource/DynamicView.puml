@@ -4,7 +4,7 @@
 !include ../../../theme/SequenceDiagram.puml
 !include ./Title.puml
 
-title TITLE\nSolution Outline Dynamic View — Create Resource (Optimized Activations)
+title TITLE\nSolution Outline Dynamic View ,  Create Resource (Optimized Activations)
 
 actor User
 participant "Client Application\n(Web/Mobile)" as ClientApp
@@ -38,7 +38,7 @@ deactivate Gateway
 ClientApp --> User : Render form UI
 deactivate ClientApp
 
-' Step 3: User submits create request — ClientApp active only while submitting + rendering result
+' Step 3: User submits create request ,  ClientApp active only while submitting + rendering result
 User -> ClientApp : Submit CreateResource (name, target)
 activate ClientApp
 ClientApp -> Gateway : Mutation CreateResource(input) [Bearer token]
