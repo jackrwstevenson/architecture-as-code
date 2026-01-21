@@ -1,6 +1,6 @@
 # Architecture As Code
 
-This repository contains architecture as code, using PlantUML to create a series of activity and sequence diagrams that explain each journey. The journeys are organised into reusable components, which can be found in the `components` folder.
+This repository contains architecture (diagrams!) as code, using PlantUML to create a series of activity and sequence diagrams that explain each journey. The journeys are organised into reusable components, which can be found in the `components` folder.
 
 ## Example Output
 
